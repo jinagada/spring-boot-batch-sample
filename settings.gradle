@@ -1,0 +1,3 @@
+rootProject.name = 'demo'
+include 'batch-server'
+include 'h2-server'

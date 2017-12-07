@@ -1,0 +1,63 @@
+spring:
+  batch:
+    initializer:
+      enabled: false
+    job:
+      enabled: false
+# Data Source Configuration
+batch:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/batch;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    initialize: false
+    tomcat:
+      initial-size: 5
+      min-idle: 5
+      max-idle: 10
+      max-active: 10
+      validation-query: select 1 from dual
+      test-while-idle: true
+      max-wait: 10000
+master:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    initialize: false
+    tomcat:
+      initial-size: 5
+      min-idle: 5
+      max-idle: 10
+      max-active: 10
+      validation-query: select 1 from dual
+      test-while-idle: true
+      max-wait: 10000
+slave:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    initialize: false
+    tomcat:
+      initial-size: 5
+      min-idle: 5
+      max-idle: 10
+      max-active: 10
+      validation-query: select 1 from dual
+      test-while-idle: true
+      max-wait: 10000
+# MyBatis Configuration
+mybatis:
+  config-location: classpath:sqlmap/mybatis-config.xml
+  mapper-locations: classpath:sqlmap/*Mapper.xml
+logging:
+#  file: D:\\logs\\newsqbatch.log
+  level:
+    org.springframework.security: debug
+    org.springframework.boot: debug
+    com.example: debug
+
