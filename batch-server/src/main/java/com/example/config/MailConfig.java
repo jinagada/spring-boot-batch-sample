@@ -12,7 +12,7 @@ import java.util.Properties;
 public class MailConfig {
     @Value("${smtp.host}")
     private String SMTP_HOST;
-    @Value("${smtp.prot}")
+    @Value("${smtp.port}")
     private int SMTP_PORT;
     @Value("${smtp.username}")
     private String SMTP_USER;
