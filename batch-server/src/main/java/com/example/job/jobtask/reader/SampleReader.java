@@ -1,7 +1,7 @@
 package com.example.job.jobtask.reader;
 
 import com.example.mapper.SampleOrgMapper;
-import com.example.model.SampleOrg;
+import com.example.model.SampleOrgModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-public class SampleReader implements ItemReader<SampleOrg> {
+public class SampleReader implements ItemReader<SampleOrgModel> {
     @Autowired
     private SampleOrgMapper sampleOrgMapper;
 
-    private List<SampleOrg> items;
+    private List<SampleOrgModel> items;
 
     @Override
-    public SampleOrg read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
-        SampleOrg item;
+    public SampleOrgModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+        SampleOrgModel item;
         if (items == null) {
             log.debug("SampleReader start");
-            final List<SampleOrg> list = sampleOrgMapper.selectSampleOrg();
-            final Optional<List<SampleOrg>> sampleOrgs = Optional.ofNullable(list);
+            final List<SampleOrgModel> list = sampleOrgMapper.selectSampleOrg();
+            final Optional<List<SampleOrgModel>> sampleOrgs = Optional.ofNullable(list);
             log.debug("SampleReader items size : {}", sampleOrgs.orElse(new ArrayList<>()).size());
             items = sampleOrgs.orElse(new ArrayList<>());
         }

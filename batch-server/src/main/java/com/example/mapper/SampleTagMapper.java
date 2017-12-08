@@ -1,13 +1,13 @@
 package com.example.mapper;
 
 import com.example.annotation.SlaveDb;
-import com.example.model.SampleTag;
+import com.example.model.SampleTagModel;
 
 import java.util.List;
 
 @SlaveDb
 public interface SampleTagMapper {
-    public List<SampleTag> selectSampleTag() throws Exception;
+    public List<SampleTagModel> selectSampleTag() throws Exception;
 
-    public int insertSampleTag(SampleTag param) throws Exception;
+    public int insertSampleTag(SampleTagModel param) throws Exception;
 }

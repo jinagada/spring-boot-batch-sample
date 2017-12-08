@@ -4,8 +4,8 @@ import com.example.job.jobtask.processor.SampleProcessor;
 import com.example.job.jobtask.reader.SampleReader;
 import com.example.job.jobtask.writer.SampleWriter;
 import com.example.job.listener.JobCompletionNotificationListener;
-import com.example.model.SampleOrg;
-import com.example.model.SampleTag;
+import com.example.model.SampleOrgModel;
+import com.example.model.SampleTagModel;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -36,7 +36,7 @@ public class SampleRWJobConfig {
     @Bean
     public Step sampleRWStep() {
         return stepBuilderFactory.get("sampleRWStep")
-                .<SampleOrg, SampleTag>chunk(1)
+                .<SampleOrgModel, SampleTagModel>chunk(1)
                 .reader(sampleReader())
                 .processor(sampleProcessor())
                 .writer(sampleWriter())

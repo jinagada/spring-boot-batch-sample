@@ -2,8 +2,8 @@ package com.example.job.jobtask.tasklet;
 
 import com.example.mapper.SampleOrgMapper;
 import com.example.mapper.SampleTagMapper;
-import com.example.model.SampleOrg;
-import com.example.model.SampleTag;
+import com.example.model.SampleOrgModel;
+import com.example.model.SampleTagModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -23,10 +23,10 @@ public class SampleTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         log.debug("Master connection start");
-        final List<SampleOrg> list1 = sampleOrgMapper.selectSampleOrg();
+        final List<SampleOrgModel> list1 = sampleOrgMapper.selectSampleOrg();
         log.debug("Master connection end");
         log.debug("Slave connection start");
-        final List<SampleTag> list2 = sampleTagMapper.selectSampleTag();
+        final List<SampleTagModel> list2 = sampleTagMapper.selectSampleTag();
         log.debug("Slave connection end");
         return null;
     }

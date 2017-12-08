@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Data
 @ToString
-public class SampleTag {
+public class SampleOrgModel {
     private Integer id;
     private String name;
 }

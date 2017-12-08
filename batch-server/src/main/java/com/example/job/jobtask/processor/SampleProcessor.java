@@ -1,15 +1,15 @@
 package com.example.job.jobtask.processor;
 
-import com.example.model.SampleOrg;
-import com.example.model.SampleTag;
+import com.example.model.SampleOrgModel;
+import com.example.model.SampleTagModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.ItemProcessor;
 
 @Slf4j
-public class SampleProcessor implements ItemProcessor<SampleOrg, SampleTag> {
+public class SampleProcessor implements ItemProcessor<SampleOrgModel, SampleTagModel> {
     @Override
-    public SampleTag process(SampleOrg item) throws Exception {
-        SampleTag result = new SampleTag();
+    public SampleTagModel process(SampleOrgModel item) throws Exception {
+        SampleTagModel result = new SampleTagModel();
         log.debug("SampleProcessor input : {}", item);
         result.setId(item.getId());
         result.setName(item.getName());

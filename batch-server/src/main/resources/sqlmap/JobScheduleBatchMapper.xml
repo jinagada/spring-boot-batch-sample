@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.JobScheduleBatchMapper">
+    <select id="selectJobSchedule" parameterType="string" resultType="jobScheduleModel">
+        SELECT JOB_SCHEDULE_ID
+              ,CRON_EXPRESSION
+              ,DESCRIPTION
+              ,JOB_NAME
+              ,JOB_PARAMETER
+              ,SCHEDULED
+              ,RDATE
+              ,MDATE
+        FROM T_JOB_SCHEDULES
+        WHERE JOB_NAME = #{jobName}
+    </select>
+
+    <update id="updateScheduled" parameterType="jobScheduleModel">
+        UPDATE T_JOB_SCHEDULES
+        SET SCHEDULED = #{scheduled}
+           ,MDATE = NOW()
+        WHERE JOB_NAME = #{jobName}
+    </update>
+
+    <insert id="insertJobSchedule" parameterType="jobScheduleModel">
+        INSERT INTO T_JOB_SCHEDULES(
+            CRON_EXPRESSION
+            ,DESCRIPTION
+            ,JOB_NAME
+            ,JOB_PARAMETER
+            ,SCHEDULED
+            ,RDATE
+        ) VALUES (
+            #{cronExpression}
+            ,#{description}
+            ,#{jobName}
+            ,#{jobParameter}
+            ,#{scheduled}
+            ,NOW()
+        )
+    </insert>
+
+    <update id="updateJobSchedule" parameterType="jobScheduleModel">
+        UPDATE T_JOB_SCHEDULES
+        SET CRON_EXPRESSION = #{cronExpression}
+           ,DESCRIPTION = #{description}
+           ,JOB_NAME = #{jobName}
+           ,JOB_PARAMETER = #{jobParameter}
+           ,SCHEDULED = #{scheduled}
+           ,MDATE = NOW()
+        WHERE JOB_NAME = #{jobName}
+    </update>
+</mapper>
