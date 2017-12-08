@@ -1,8 +1,10 @@
 package com.example.config;
 
 import com.example.annotation.SlaveDb;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -35,5 +37,11 @@ public class SlaveDbConfig extends DatabaseConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         configureSqlSessionFactory(sqlSessionFactoryBean, slaveDataSource());
         return sqlSessionFactoryBean.getObject();
+    }
+
+    @Bean
+    public SqlSessionTemplate slaveSqlSessionTemplate() throws Exception {
+        SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(slaveSqlSessionFactory(), ExecutorType.SIMPLE);
+        return sqlSessionTemplate;
     }
 }

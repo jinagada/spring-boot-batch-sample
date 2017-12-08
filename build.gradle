@@ -21,6 +21,8 @@ configure(allprojects) {
         h2Version = '1.4.190'
         mybatisBootVersion = '1.3.1'
         javamelodyVersion = '1.69.0'
+        javamailapiVersion = '1.5.6'
+        javamailVersion = '1.4.7'
     }
 
     apply plugin: 'java'
@@ -54,10 +56,16 @@ project(':batch-server') {
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-batch'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-velocity'
 //        providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
 
         compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisBootVersion
         compile group: 'net.bull.javamelody', name: 'javamelody-core', version: javamelodyVersion
+
+        // java mail
+        compile group: 'org.springframework', name: 'spring-context-support'
+        compile group: 'javax.mail', name: 'javax.mail-api', version: javamailapiVersion
+        compile group: 'javax.mail', name: 'mail', version: javamailVersion
 
         testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
     }

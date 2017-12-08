@@ -1,8 +1,10 @@
 package com.example.config;
 
 import com.example.annotation.BatchDb;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -39,5 +41,12 @@ public class BatchDbConfig extends DatabaseConfig {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         configureSqlSessionFactory(sqlSessionFactoryBean, batchDataSource());
         return sqlSessionFactoryBean.getObject();
+    }
+
+    @Primary
+    @Bean
+    public SqlSessionTemplate batchSqlSessionTemplate() throws Exception {
+        SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(batchSqlSessionFactory(), ExecutorType.SIMPLE);
+        return sqlSessionTemplate;
     }
 }

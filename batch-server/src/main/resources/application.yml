@@ -60,4 +60,21 @@ logging:
     org.springframework.security: debug
     org.springframework.boot: debug
     com.example: debug
+# email
+smtp:
+  host: smtp.gmail.com
+  port: 587
+  username: your email
+  password: your password
+batcherror:
+  beforeerror:
+    title: Batch ERROR
+    receive:
+      email: test@test.com
+  aftererror:
+    title: Batch ERROR
+    receive:
+      email: test@test.com
+  send:
+    email: send@send.com
 
