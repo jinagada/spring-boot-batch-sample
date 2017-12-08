@@ -11,7 +11,9 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class SampleTasklet implements Tasklet {
@@ -23,7 +25,10 @@ public class SampleTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         log.debug("Master connection start");
-        final List<SampleOrgModel> list1 = sampleOrgMapper.selectSampleOrg();
+        Map<String, Object> param = new HashMap<>();
+        param.put("from", null);
+        param.put("offset", null);
+        final List<SampleOrgModel> list1 = sampleOrgMapper.selectSampleOrg(param);
         log.debug("Master connection end");
         log.debug("Slave connection start");
         final List<SampleTagModel> list2 = sampleTagMapper.selectSampleTag();
