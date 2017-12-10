@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 @Slf4j
 public class SamplePartitioner implements Partitioner {
     @Autowired
@@ -44,11 +46,11 @@ public class SamplePartitioner implements Partitioner {
                                 result.put("partition" + i, value);
                             }
                         } else {
-                            from = from + offset;
                             value = new ExecutionContext();
                             value.put("from", String.valueOf(from));
                             value.put("offset", String.valueOf(offset));
                             result.put("partition" + i, value);
+                            from = from + offset;
                         }
                     }
                 } else {
@@ -65,6 +67,7 @@ public class SamplePartitioner implements Partitioner {
                 value.put("offset", null);
                 result.put("partition0", value);
             }
+            log.debug("SamplePartitioner VALUES : {}", result);
         } catch (Exception e) {
             log.error("SamplePartitioner ERROR", e);
         }

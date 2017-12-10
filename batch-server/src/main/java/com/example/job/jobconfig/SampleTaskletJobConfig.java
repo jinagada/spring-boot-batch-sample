@@ -19,6 +19,8 @@ public class SampleTaskletJobConfig {
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
     private JobCompletionNotificationListener notificationListener;
+    @Autowired
+    private SampleTasklet sampleTasklet;
 
     @Bean
     public Job sampleTaskletJob() {
@@ -32,12 +34,7 @@ public class SampleTaskletJobConfig {
     @Bean
     public Step sampleTaskletStep() {
         return stepBuilderFactory.get("sampleTaskletStep")
-                .tasklet(sampleTasklet())
+                .tasklet(sampleTasklet)
                 .build();
-    }
-
-    @Bean
-    public SampleTasklet sampleTasklet() {
-        return new SampleTasklet();
     }
 }

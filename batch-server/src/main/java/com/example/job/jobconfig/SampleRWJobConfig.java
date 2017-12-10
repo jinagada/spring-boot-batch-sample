@@ -10,10 +10,8 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,6 +23,12 @@ public class SampleRWJobConfig {
     private StepBuilderFactory stepBuilderFactory;
     @Autowired
     private JobCompletionNotificationListener notificationListener;
+    @Autowired
+    private SampleReader sampleReader;
+    @Autowired
+    private SampleProcessor sampleProcessor;
+    @Autowired
+    private SampleWriter sampleWriter;
 
     @Bean
     public Job sampleRWJob() {
@@ -39,25 +43,9 @@ public class SampleRWJobConfig {
     public Step sampleRWStep() {
         return stepBuilderFactory.get("sampleRWStep")
                 .<SampleOrgModel, SampleTagModel>chunk(1)
-                .reader(sampleReader())
-                .processor(sampleProcessor())
-                .writer(sampleWriter())
+                .reader(sampleReader)
+                .processor(sampleProcessor)
+                .writer(sampleWriter)
                 .build();
-    }
-
-    @Bean
-    @StepScope
-    public SampleReader sampleReader() {
-        return new SampleReader();
-    }
-
-    @Bean
-    public SampleProcessor sampleProcessor() {
-        return new SampleProcessor();
-    }
-
-    @Bean
-    public SampleWriter sampleWriter() {
-        return new SampleWriter();
     }
 }
