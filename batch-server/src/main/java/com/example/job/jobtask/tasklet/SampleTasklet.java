@@ -35,6 +35,6 @@ public class SampleTasklet implements Tasklet {
         log.debug("Slave connection start");
         final List<SampleTagModel> list2 = sampleTagMapper.selectSampleTag();
         log.debug("Slave connection end");
-        return null;
+        return RepeatStatus.FINISHED;
     }
 }
