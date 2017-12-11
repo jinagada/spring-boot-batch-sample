@@ -31,14 +31,14 @@ public class SamplePartitionReader implements ItemReader<SampleOrgModel> {
     public SampleOrgModel read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         SampleOrgModel item;
         if (items == null) {
-            log.debug("SampleReader start");
+            log.debug("SamplePartitionReader start");
             Map<String, Object> param = new HashMap<>();
             param.put("from", from);
             param.put("offset", offset);
-            log.debug("SampleReader from : {}, offset : {}", from, offset);
+            log.debug("SamplePartitionReader from : {}, offset : {}", from, offset);
             final List<SampleOrgModel> list = sampleOrgMapper.selectSampleOrg(param);
             final Optional<List<SampleOrgModel>> sampleOrgs = Optional.ofNullable(list);
-            log.debug("SampleReader items size : {}", sampleOrgs.orElse(new ArrayList<>()).size());
+            log.debug("SamplePartitionReader items size : {}", sampleOrgs.orElse(new ArrayList<>()).size());
             items = sampleOrgs.orElse(new ArrayList<>());
         }
         if (!items.isEmpty()) {
