@@ -25,7 +25,7 @@ public class SampleReader implements ItemReader<SampleOrgModel> {
         SampleOrgModel item;
         if (items == null) {
             log.debug("SampleReader start");
-            Map<String, Object> param = new HashMap<>();
+            final Map<String, Object> param = new HashMap<>();
             param.put("from", null);
             param.put("offset", null);
             final List<SampleOrgModel> list = sampleOrgMapper.selectSampleOrg(param);

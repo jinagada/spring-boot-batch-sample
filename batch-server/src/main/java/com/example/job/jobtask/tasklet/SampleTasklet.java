@@ -27,7 +27,7 @@ public class SampleTasklet implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
         log.debug("Master connection start");
-        Map<String, Object> param = new HashMap<>();
+        final Map<String, Object> param = new HashMap<>();
         param.put("from", null);
         param.put("offset", null);
         final List<SampleOrgModel> list1 = sampleOrgMapper.selectSampleOrg(param);

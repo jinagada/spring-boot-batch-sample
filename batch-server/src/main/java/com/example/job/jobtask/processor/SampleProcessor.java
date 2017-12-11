@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class SampleProcessor implements ItemProcessor<SampleOrgModel, SampleTagModel> {
     @Override
     public SampleTagModel process(SampleOrgModel item) throws Exception {
-        SampleTagModel result = new SampleTagModel();
+        final SampleTagModel result = new SampleTagModel();
         log.debug("SampleProcessor input : {}", item);
         result.setId(item.getId());
         result.setName(item.getName());

@@ -32,6 +32,8 @@ public class SamplePartitionRWJobConfig {
     @Autowired
     private TaskExecutor taskExecutor;
     @Autowired
+    private SamplePartitioner samplePartitioner;
+    @Autowired
     private SamplePartitionReader samplePartitionReader;
     @Autowired
     private SampleProcessor sampleProcessor;
@@ -50,14 +52,9 @@ public class SamplePartitionRWJobConfig {
     @Bean
     public Step samplePartitionStep() {
         return stepBuilderFactory.get("samplePartitionStep")
-                .partitioner(samplePartitionRWStep().getName(), samplePartitioner())
+                .partitioner(samplePartitionRWStep().getName(), samplePartitioner)
                 .partitionHandler(samplePartitionHandler())
                 .build();
-    }
-
-    @Bean
-    public SamplePartitioner samplePartitioner() {
-        return new SamplePartitioner();
     }
 
     @Bean

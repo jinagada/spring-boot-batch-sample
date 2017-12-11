@@ -32,7 +32,7 @@ public class SamplePartitionReader implements ItemReader<SampleOrgModel> {
         SampleOrgModel item;
         if (items == null) {
             log.debug("SamplePartitionReader start");
-            Map<String, Object> param = new HashMap<>();
+            final Map<String, Object> param = new HashMap<>();
             param.put("from", from);
             param.put("offset", offset);
             log.debug("SamplePartitionReader from : {}, offset : {}", from, offset);
