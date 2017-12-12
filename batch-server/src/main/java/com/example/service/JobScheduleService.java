@@ -119,6 +119,7 @@ public class JobScheduleService implements SchedulingConfigurer {
     }
 
     public int startSchedule(JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException, NoSuchJobException {
+        jobScheduleModel.setScheduled(1);// 스케줄 시작
         int count = jobScheduleBatchMapper.updateScheduled(jobScheduleModel);
         log.warn("[{}] job schedule will be started!!", jobScheduleModel.getJobName());
         resetJobSchedules();
@@ -126,6 +127,7 @@ public class JobScheduleService implements SchedulingConfigurer {
     }
 
     public int stopSchedule(JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException, NoSuchJobException {
+        jobScheduleModel.setScheduled(0);// 스케줄 중지
         int count = jobScheduleBatchMapper.updateScheduled(jobScheduleModel);
         log.warn("[{}] job schedule will be stoped!!", jobScheduleModel.getJobName());
         resetJobSchedules();
