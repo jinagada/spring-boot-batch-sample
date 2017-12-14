@@ -57,6 +57,7 @@ project(':batch-server') {
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-velocity'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
 //        providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
 
         compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisBootVersion
