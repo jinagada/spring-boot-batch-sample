@@ -21,7 +21,9 @@
         <tbody>
             <tr th:each="jobObj,rowStat : ${joblist}">
                 <td scope="row" th:text="${rowStat.count}">1</td>
-                <td class="valueJobName" th:text="${jobObj.jobName}">Job Name</td>
+                <td class="valueJobName" data-target="#layerpop" data-toggle="modal" style="cursor: pointer" th:text="${jobObj.jobName}">
+                    Job Name
+                </td>
                 <td th:text="${jobObj.cronExpression}">스케줄</td>
                 <td th:text="${jobObj.jobParameter}">파라메터</td>
                 <td th:text="${jobObj.description}">설명</td>
@@ -34,6 +36,30 @@
             </tr>
         </tbody>
     </table>
+
+    <button class="btn btn-default" data-target="#layerpop" data-toggle="modal">스케줄 등록</button><br/>
+    <div class="modal fade" id="layerpop" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- header -->
+                <div class="modal-header">
+                    <!-- 닫기(x) 버튼 -->
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <!-- header title -->
+                    <h4 class="modal-title">Header</h4>
+                </div>
+                <!-- body -->
+                <div class="modal-body">
+                    Body
+                </div>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    Footer
+                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- /.container -->
 <div th:replace="html/fragments/footer :: footer"/>
