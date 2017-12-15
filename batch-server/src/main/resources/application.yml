@@ -4,6 +4,11 @@ spring:
       enabled: false
     job:
       enabled: false
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
 # Data Source Configuration
 batch:
   datasource:

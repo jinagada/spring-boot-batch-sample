@@ -23,6 +23,7 @@ configure(allprojects) {
         javamelodyVersion = '1.69.0'
         javamailapiVersion = '1.5.6'
         javamailVersion = '1.4.7'
+        bootstrapVersion = '3.3.7'
     }
 
     apply plugin: 'java'
@@ -56,9 +57,14 @@ project(':batch-server') {
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-batch'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-velocity'
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf'
+        compile group: 'org.springframework.boot', name: 'spring-boot-devtools'
 //        providedCompile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat'
+
+        compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4'
+        compile group: 'org.webjars', name: 'bootstrap', version: bootstrapVersion
 
         compile group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisBootVersion
         compile group: 'net.bull.javamelody', name: 'javamelody-core', version: javamelodyVersion

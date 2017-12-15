@@ -45,7 +45,7 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
                 final String alramContents = String.format("%s-%d Job has been stoped!! because this job is already running!!!", jobName,
                         instanceId);
                 // 메일 발송
-                alramService.alramSend(beforeErrorReceiveEmail, beforeErrorTitle, alramContents, "mail.vm");
+                alramService.alramSend(beforeErrorReceiveEmail, beforeErrorTitle, alramContents, "email/mail.vm");
             }
 
             log.debug("beforeJob : {}-{}", jobName, instanceId);
