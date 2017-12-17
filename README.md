@@ -7,7 +7,7 @@
     1. 설정 방법 참조 : http://haviyj.tistory.com/11
 6. 로그인 화면 적용
     1. 계정정보는 SecurityConfig.java 파일 참조
-7. 화면 개발은 Thymeleaf 사용
+7. 화면 개발은 Thymeleaf, Bootstrap 사용
 ## 스케줄 관리용 테이블 생성 스키마(H2)
 
     CREATE TABLE T_JOB_SCHEDULES

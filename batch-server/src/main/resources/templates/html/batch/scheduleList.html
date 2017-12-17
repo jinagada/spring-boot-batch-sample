@@ -20,13 +20,20 @@
         </thead>
         <tbody>
             <tr th:each="jobObj,rowStat : ${joblist}">
-                <td scope="row" th:text="${rowStat.count}">1</td>
-                <td class="valueJobName" data-target="#layerpop" data-toggle="modal" style="cursor: pointer" th:text="${jobObj.jobName}">
-                    Job Name
-                </td>
-                <td th:text="${jobObj.cronExpression}">스케줄</td>
-                <td th:text="${jobObj.jobParameter}">파라메터</td>
-                <td th:text="${jobObj.description}">설명</td>
+                <td class="executeJob"
+                    scope="row"
+                    style="cursor: pointer"
+                    data-target="#layerSaveSchedule" data-toggle="modal"
+                    th:text="${rowStat.count}">1</td>
+                <td class="valueJobName"
+                    style="cursor: pointer"
+                    th:text="${jobObj.jobName}">Job Name</td>
+                <td class="valueCronExpression"
+                    style="cursor: pointer"
+                    data-target="#layerSaveSchedule" data-toggle="modal"
+                    th:text="${jobObj.cronExpression}">스케줄</td>
+                <td class="valueJobParameter" th:text="${jobObj.jobParameter}">파라메터</td>
+                <td class="valueDescription" th:text="${jobObj.description}">설명</td>
                 <td class="changeSeheduled" style="cursor: pointer" th:inline="text">
                     [[${jobObj.scheduled == 1 ? '실행' : '중지'}]]
                     <input type="hidden" name="scheduled" th:value="${jobObj.scheduled}" />
@@ -37,8 +44,7 @@
         </tbody>
     </table>
 
-    <button class="btn btn-default" data-target="#layerpop" data-toggle="modal">스케줄 등록</button><br/>
-    <div class="modal fade" id="layerpop" >
+    <div class="modal fade" id="layerSaveSchedule" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- header -->
@@ -46,15 +52,37 @@
                     <!-- 닫기(x) 버튼 -->
                     <button type="button" class="close" data-dismiss="modal">×</button>
                     <!-- header title -->
-                    <h4 class="modal-title">Header</h4>
+                    <h4 class="modal-title">스케줄 저장</h4>
                 </div>
                 <!-- body -->
                 <div class="modal-body">
-                    Body
+                    <div class="form-group">
+                        <label for="_jobName" class="form-control-label">Job Name</label>
+                        <input type="text" class="form-control" id="_jobName" readonly="readonly" />
+                    </div>
+                    <div class="form-group" id="hideCronExpression">
+                        <label for="_cronExpression" class="form-control-label">스케줄(Cron)</label>
+                        <input type="text" class="form-control" id="_cronExpression" />
+                    </div>
+                    <div class="form-group">
+                        <label for="_jobParameter" class="form-control-label">파라메터</label>
+                        <input type="text" class="form-control" id="_jobParameter" />
+                    </div>
+                    <div class="form-group" id="hideDescription">
+                        <label for="_description" class="form-control-label">설명</label>
+                        <input type="text" class="form-control" id="_description" />
+                    </div>
+                    <div class="form-check" id="hideScheduled">
+                        <legend>상태</legend>
+                        <input type="radio" class="form-check-input" id="_scheduled1" name="_scheduled" value="1"/>
+                        <label for="_scheduled1" class="form-check-label">시작</label>
+                        <input type="radio" class="form-check-input" id="_scheduled0" name="_scheduled" value="0" checked="checked" />
+                        <label for="_scheduled0" class="form-check-label">중지</label>
+                    </div>
                 </div>
                 <!-- Footer -->
                 <div class="modal-footer">
-                    Footer
+                    <button type="button" class="btn btn-primary saveSchedule">저장</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
                 </div>
             </div>
@@ -66,6 +94,7 @@
 <script type="text/javascript" th:inline="javascript">
 /*<![CDATA[*/
     $(document).ready(function () {
+        // 스케줄 실행/중지
         $(".changeSeheduled").on("click", function () {
             var jobName = $(this).parent().children(".valueJobName").text();
             var scheduled = $(this).find("input[name='scheduled']").val();
@@ -73,6 +102,54 @@
                 fn_startJobSchedule(jobName);
             } else {
                 fn_stopJobSchedule(jobName);
+            }
+        });
+        // 스케줄 등록/수정 팝업
+        $("#layerSaveSchedule").on("show.bs.modal", function(event) {
+            var thisObj = $(event.relatedTarget);
+            if (thisObj.get(0).className == "valueCronExpression") {
+                $("#hideCronExpression").show();
+                $("#hideDescription").show();
+                $("#hideScheduled").show();
+                $(".modal-title").text("스케줄 저장");
+                $(".saveSchedule").text("저장");
+                $("#_jobName").val(thisObj.parent().children(".valueJobName").text());
+                $("#_cronExpression").val(thisObj.parent().children(".valueCronExpression").text());
+                $("#_jobParameter").val(thisObj.parent().children(".valueJobParameter").text());
+                $("#_description").val(thisObj.parent().children(".valueDescription").text());
+                var scheduled = thisObj.parent().find("input[name='scheduled']").val();
+                if (scheduled == 1) {
+                    $("#_scheduled1").attr("checked", "checked");
+                    $("#_scheduled0").removeAttr("checked");
+                } else {
+                    $("#_scheduled1").removeAttr("checked");
+                    $("#_scheduled0").attr("checked", "checked");
+                }
+            } else if (thisObj.get(0).className == "executeJob") {
+                $("#hideCronExpression").hide();
+                $("#hideDescription").hide();
+                $("#hideScheduled").hide();
+                $(".modal-title").text("스케줄 실행");
+                $(".saveSchedule").text("실행");
+                $("#_jobName").val(thisObj.parent().children(".valueJobName").text());
+                $("#_jobParameter").val(thisObj.parent().children(".valueJobParameter").text());
+                $("#_cronExpression").val("");
+                $("#_description").val("");
+                $("#_scheduled1").removeAttr("checked");
+                $("#_scheduled0").attr("checked", "checked");
+            }
+        });
+        // 스케줄 저장/실행
+        $(".saveSchedule").on("click", function () {
+            var jobName = $("#_jobName").val();
+            var jobParameter = $("#_jobParameter").val();
+            if ($(this).text() == "저장") {
+                var cronExpression = $("#_cronExpression").val();
+                var description = $("#_description").val();
+                var scheduled = $(this).parent().parent().find("input:radio[name='_scheduled']:checked").val();
+                fn_saveJobSchedule(jobName, cronExpression, jobParameter, description, scheduled);
+            } else if ($(this).text() == "실행") {
+                fn_executeJob(jobName, jobParameter);
             }
         });
     });
@@ -100,6 +177,47 @@
         $.post(url, params).done(function (data) {
             if (data != 0) {
                 alert("[" + jobName + "] Job 스케줄 중지를 요청하였습니다.");
+            } else {
+                alert("잘못된 정보 입니다.");
+            }
+            location.href = /*[[@{/batch/web/scheduleList}]]*/"";
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        });
+    }
+    
+    function fn_saveJobSchedule(jobName, cronExpression, jobParameter, description, scheduled) {
+        if (!confirm("[" + jobName + "] Job 스케줄을 저장합니다. 계속 진행하시겠습니까?")) return;
+        var url = /*[[@{/batch/schedule/saveSchedule}]]*/"";
+        var params = {
+            jobName:jobName,
+            cronExpression:cronExpression,
+            jobParameter:jobParameter,
+            description:description,
+            scheduled:scheduled
+        };
+        $.post(url, params).done(function (data) {
+            if (data != 0) {
+                alert("[" + jobName + "] Job 스케줄 저장을 요청하였습니다.");
+            } else {
+                alert("잘못된 정보 입니다.");
+            }
+            location.href = /*[[@{/batch/web/scheduleList}]]*/"";
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        });
+    }
+    
+    function fn_executeJob(jobName, jobParameter) {
+        if (!confirm("[" + jobName + "] Job을 실행합니다. 계속 진행하시겠습니까?")) return;
+        var url = /*[[@{/batch/schedule/startJob}]]*/"";
+        var params = {
+            jobName:jobName,
+            jobParameter:jobParameter
+        };
+        $.post(url, params).done(function (data) {
+            if (data != 0) {
+                alert("[" + jobName + "] Job 실행을 요청하였습니다.");
             } else {
                 alert("잘못된 정보 입니다.");
             }
