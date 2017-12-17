@@ -11,6 +11,7 @@ import org.springframework.batch.core.launch.NoSuchJobInstanceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,29 +20,29 @@ public class JobLauncherController {
     @Autowired
     private JobScheduleService jobScheduleService;
 
-    @RequestMapping("/batch/schedule/getJobScheduleList")
+    @RequestMapping(value = "/batch/schedule/getJobScheduleList", method = RequestMethod.GET)
     public JobScheduleModel getJobScheduleList(@ModelAttribute JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException,
             NoSuchJobException {
         jobScheduleModel.setJobScheduleModelList(jobScheduleService.getJobScheduleList());
         return jobScheduleModel;
     }
 
-    @RequestMapping(value = "/batch/schedule/startJob")
+    @RequestMapping(value = "/batch/schedule/startJob", method = RequestMethod.POST)
     public Long startJob(@ModelAttribute JobRunModel jobRunModel) throws JobParametersInvalidException, JobInstanceAlreadyExistsException, NoSuchJobException {
         return jobScheduleService.startJob(jobRunModel);
     }
 
-    @RequestMapping(value = "/batch/schedule/startSchedule")
+    @RequestMapping(value = "/batch/schedule/startSchedule", method = RequestMethod.POST)
     public int startSchedule(@ModelAttribute JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException, NoSuchJobException {
         return jobScheduleService.startSchedule(jobScheduleModel);
     }
 
-    @RequestMapping(value = "/batch/schedule/stopSchedule")
+    @RequestMapping(value = "/batch/schedule/stopSchedule", method = RequestMethod.POST)
     public int stopSchedule(@ModelAttribute JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException, NoSuchJobException {
         return jobScheduleService.stopSchedule(jobScheduleModel);
     }
 
-    @RequestMapping(value = "/batch/schedule/saveSchedule")
+    @RequestMapping(value = "/batch/schedule/saveSchedule", method = RequestMethod.POST)
     public int saveSchedule(@ModelAttribute JobScheduleModel jobScheduleModel) throws NoSuchJobInstanceException, NoSuchJobException {
         return jobScheduleService.saveSchedule(jobScheduleModel);
     }

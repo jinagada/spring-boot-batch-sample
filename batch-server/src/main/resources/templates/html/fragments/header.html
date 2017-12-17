@@ -2,7 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:fragment="header-css">
     <meta charset="UTF-8"/>
-    <title th:text="'Spring Boot Batch 예제 - ' + ${title}" />
+    <title th:text="'Spring Boot Batch 예제 - ' + ${jobName} + ' ' + ${title}" />
     <!-- this is header-css -->
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
     <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css" />

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="html/fragments/header :: header-css(title='스케줄 목록')" />
+<head th:replace="html/fragments/header :: header-css(title='스케줄 목록', jobName='')" />
 <body>
 <div th:replace="html/fragments/header :: header"/>
 <div class="container">
@@ -25,9 +25,9 @@
                     style="cursor: pointer"
                     data-target="#layerSaveSchedule" data-toggle="modal"
                     th:text="${rowStat.count}">1</td>
-                <td class="valueJobName"
-                    style="cursor: pointer"
-                    th:text="${jobObj.jobName}">Job Name</td>
+                <td>
+                    <a class="valueJobName" th:text="${jobObj.jobName}" th:href="@{/batch/web/jobExecuteList(jobName=${jobObj.jobName})}" />
+                </td>
                 <td class="valueCronExpression"
                     style="cursor: pointer"
                     data-target="#layerSaveSchedule" data-toggle="modal"
@@ -96,7 +96,7 @@
     $(document).ready(function () {
         // 스케줄 실행/중지
         $(".changeSeheduled").on("click", function () {
-            var jobName = $(this).parent().children(".valueJobName").text();
+            var jobName = $(this).parent().find(".valueJobName").text();
             var scheduled = $(this).find("input[name='scheduled']").val();
             if (scheduled == 0) {
                 fn_startJobSchedule(jobName);
@@ -113,7 +113,7 @@
                 $("#hideScheduled").show();
                 $(".modal-title").text("스케줄 저장");
                 $(".saveSchedule").text("저장");
-                $("#_jobName").val(thisObj.parent().children(".valueJobName").text());
+                $("#_jobName").val(thisObj.parent().find(".valueJobName").text());
                 $("#_cronExpression").val(thisObj.parent().children(".valueCronExpression").text());
                 $("#_jobParameter").val(thisObj.parent().children(".valueJobParameter").text());
                 $("#_description").val(thisObj.parent().children(".valueDescription").text());
@@ -131,7 +131,7 @@
                 $("#hideScheduled").hide();
                 $(".modal-title").text("스케줄 실행");
                 $(".saveSchedule").text("실행");
-                $("#_jobName").val(thisObj.parent().children(".valueJobName").text());
+                $("#_jobName").val(thisObj.parent().find(".valueJobName").text());
                 $("#_jobParameter").val(thisObj.parent().children(".valueJobParameter").text());
                 $("#_cronExpression").val("");
                 $("#_description").val("");
