@@ -37,6 +37,11 @@
                         <a th:href="@{/about}">About</a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li th:class="${#httpServletRequest.requestURI eq '/about' ? 'active' : ''}">
+                        <a th:href="@{/monitoring}">JavaMelody</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
