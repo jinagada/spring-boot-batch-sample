@@ -5,7 +5,18 @@
 <div th:replace="html/fragments/header :: header"/>
 <div class="container">
     <div class="starter-template">
-        <h1>비로그인 일반 페이지</h1>
+        <h1>Cron expression</h1>
+        <pre>
++-------------------- second (0 - 59)
+|  +----------------- minute (0 - 59)
+|  |  +-------------- hour (0 - 23)
+|  |  |  +----------- day of month (1 - 31)
+|  |  |  |  +-------- month (1 - 12)
+|  |  |  |  |  +----- day of week (0 - 6) (Sunday=0 or 7)
+|  |  |  |  |  |  +-- year [optional]
+|  |  |  |  |  |  |
+*  *  *  *  *  *  * command to be executed
+        </pre>
     </div>
 </div>
 <!-- /.container -->
