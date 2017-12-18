@@ -10,4 +10,12 @@ public class CommonModel {
     private int pageNo;
     private int offset;
     private int totalCount;
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    public int getOffset() {
+        return (getPageNo() - 1) * getPageRows();
+    }
 }

@@ -33,7 +33,7 @@
     </tr>
     </tbody>
 </table>
-<nav aria-label="pageing" th:with="blockSize=3, blockNo=${((jobIns.pageNo + jobIns.pageRows) - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows)) / jobIns.pageRows - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows eq 0 ? 1 : 0)}">
+<nav aria-label="pageing" th:with="blockSize=10, blockNo=${((jobIns.pageNo + jobIns.pageRows) - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows)) / jobIns.pageRows - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows eq 0 ? 1 : 0)}">
     <ul class="pagination justify-content-center"
         th:with="startPage=${(blockNo - 1) * blockSize + 1}, lastPage=${(jobIns.totalCount - (jobIns.totalCount % jobIns.pageRows)) / jobIns.pageRows + 1 - (jobIns.totalCount % jobIns.pageRows eq 0 ? 1 : 0)}">
         <li class="page-item" th:remove="${startPage gt blockSize} ? none : all">

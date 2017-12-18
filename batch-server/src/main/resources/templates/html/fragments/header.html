@@ -23,6 +23,11 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav">
+                    <li th:class="${#httpServletRequest.requestURI eq '/batch/web/executionJobList' ? 'active' : ''}">
+                        <a th:href="@{/batch/web/executionJobList}">Job 실행목록</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
                     <li th:class="${#httpServletRequest.requestURI eq '/batch/web/scheduleList' ? 'active' : ''}">
                         <a th:href="@{/batch/web/scheduleList}">스케줄 목록</a>
                     </li>

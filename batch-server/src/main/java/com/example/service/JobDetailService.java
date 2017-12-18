@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.mapper.JobScheduleBatchMapper;
 import com.example.model.JobExecutionModel;
 import com.example.model.JobInstanceModel;
 import com.example.model.StepExecutionModel;
@@ -12,18 +13,17 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Slf4j
 public class JobDetailService {
     @Autowired
     private JobOperator simpleJobOperator;
-
     @Autowired
     private JobExplorer jobExplorer;
+    @Autowired
+    private JobScheduleBatchMapper jobScheduleBatchMapper;
 
     public List<JobInstanceModel> getJobInstanceList(JobInstanceModel jobInstanceModel) throws NoSuchJobException, NoSuchJobInstanceException, NoSuchJobExecutionException {
         List<JobInstanceModel> jobInstanceList = new ArrayList<>();
@@ -62,9 +62,9 @@ public class JobDetailService {
         return new JobExecutionModel(jobExecutionIdList.get(0), jobExecution);
     }
 
-    public List<JobExecutionModel> getJobExecutionListByJobInstanceId(JobExecutionModel jobExecutionVo) throws NoSuchJobInstanceException {
+    public List<JobExecutionModel> getJobExecutionListByJobInstanceId(JobExecutionModel jobExecutionModel) throws NoSuchJobInstanceException {
         List<JobExecutionModel> jobExecutionList = new ArrayList<>();
-        List<Long> jobExecutionIdList = simpleJobOperator.getExecutions(jobExecutionVo.getJobInstanceId());
+        List<Long> jobExecutionIdList = simpleJobOperator.getExecutions(jobExecutionModel.getJobInstanceId());
         for (Long jobExecutionId : jobExecutionIdList) {
             JobExecution jobExecution = jobExplorer.getJobExecution(jobExecutionId);
             JobExecutionModel getJobExecutionModel = new JobExecutionModel(jobExecutionId, jobExecution);
@@ -75,11 +75,11 @@ public class JobDetailService {
         return jobExecutionList;
     }
 
-    public List<StepExecutionModel> getStepExecutionList(StepExecutionModel stepExecutionVo) {
+    public List<StepExecutionModel> getStepExecutionList(StepExecutionModel stepExecutionModel) {
         List<StepExecutionModel> stepExecutionList = new ArrayList<>();
 
         try {
-            Iterator<StepExecution> stepExecutionIterator = jobExplorer.getJobExecution(stepExecutionVo.getJobExecutionId()).getStepExecutions().iterator();
+            Iterator<StepExecution> stepExecutionIterator = jobExplorer.getJobExecution(stepExecutionModel.getJobExecutionId()).getStepExecutions().iterator();
             while (stepExecutionIterator.hasNext()) {
                 StepExecutionModel stepExecution = new StepExecutionModel(stepExecutionIterator.next());
                 stepExecutionList.add(stepExecution);
@@ -91,11 +91,21 @@ public class JobDetailService {
         return stepExecutionList;
     }
 
-    public boolean stopJobExecution(JobExecutionModel jobExecutionVo) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
-        return simpleJobOperator.stop(jobExecutionVo.getJobExecutionId());
+    public boolean stopJobExecution(JobExecutionModel jobExecutionModel) throws NoSuchJobExecutionException, JobExecutionNotRunningException {
+        return simpleJobOperator.stop(jobExecutionModel.getJobExecutionId());
     }
 
-    public JobExecution abandonJobExecution(JobExecutionModel jobExecutionVo) throws NoSuchJobExecutionException, JobExecutionAlreadyRunningException {
-        return simpleJobOperator.abandon(jobExecutionVo.getJobExecutionId());
+    public JobExecution abandonJobExecution(JobExecutionModel jobExecutionModel) throws NoSuchJobExecutionException, JobExecutionAlreadyRunningException {
+        return simpleJobOperator.abandon(jobExecutionModel.getJobExecutionId());
+    }
+
+    public List<JobExecutionModel> selectExecutionJobsList(JobExecutionModel jobExecutionModel) throws NoSuchJobException, NoSuchJobInstanceException, NoSuchJobExecutionException {
+        Set<String> jobNames = simpleJobOperator.getJobNames();
+        List<String> jobNameList = new ArrayList<>();
+        jobNameList.addAll(jobNames);
+        jobExecutionModel.setJobNameList(jobNameList);
+        int totalCount = jobScheduleBatchMapper.selectExecutionJobsCount(jobExecutionModel);
+        jobExecutionModel.setTotalCount(totalCount);
+        return jobScheduleBatchMapper.selectExecutionJobsList(jobExecutionModel);
     }
 }

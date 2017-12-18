@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/fragments/header :: header-css(title='Job 실행목록', jobName='')" />
+<body>
+<div th:replace="html/fragments/header :: header"/>
+<div class="container">
+    <h2>Job 실행목록</h2>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Execution ID</th>
+            <th scope="col">Job Name</th>
+            <th scope="col">시작 시간</th>
+            <th scope="col">종료 시간</th>
+            <th scope="col">작업 상태</th>
+            <th scope="col">종료 상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="execObj,rowStat : ${execJobs.jobExecutionList}">
+            <td th:text="${execObj.jobExecutionId}">Execution ID</td>
+            <td>
+                <a th:text="${execObj.jobName}" th:href="@{/batch/web/jobDetail(jobName=${execObj.jobName})}"></a>
+            </td>
+            <td th:text="${#dates.format(execObj.startTime, 'yyyy/MM/dd HH:mm:ss')}">시작 시간</td>
+            <td th:if="${execObj.endTime}"
+                th:text="${#dates.format(execObj.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+            <td th:unless="${execObj.endTime}">-</td>
+            <td th:inline="text">
+                [[${execObj.status}]]
+                <button type="button" class="btn btn-primary"
+                        th:onclick="${'javascript:fn_stopJobExecution(' + execObj.jobExecutionId + ')'}"
+                        th:remove="${execObj.status.name() eq 'STARTING' or execObj.status.name() eq 'STARTED'} ? none : all">실행중지
+                </button>
+                <button type="button" class="btn btn-primary"
+                        th:onclick="${'javascript:fn_abandonJobExecution(' + execObj.jobExecutionId + ')'}"
+                        th:remove="${execObj.status.name() eq 'STOPPING' or execObj.status.name() eq 'STOPPED'} ? none : all">실행종료
+                </button>
+            </td>
+            <td th:text="${execObj.exitCode}">종료 상태</td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="pageing" th:with="blockSize=10, blockNo=${((execJobs.pageNo + execJobs.pageRows) - ((execJobs.pageNo + execJobs.pageRows) % execJobs.pageRows)) / execJobs.pageRows - ((execJobs.pageNo + execJobs.pageRows) % execJobs.pageRows eq 0 ? 1 : 0)}">
+        <ul class="pagination justify-content-center"
+            th:with="startPage=${(blockNo - 1) * blockSize + 1}, lastPage=${(execJobs.totalCount - (execJobs.totalCount % execJobs.pageRows)) / execJobs.pageRows + 1 - (execJobs.totalCount % execJobs.pageRows eq 0 ? 1 : 0)}">
+            <li class="page-item" th:remove="${startPage gt blockSize} ? none : all">
+                <a class="page-link" th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=1)}">First</a>
+            </li>
+            <li class="page-item"
+                th:with="prevPageNo=${(blockNo - 2) * blockSize + 1}"
+                th:remove="${startPage gt blockSize} ? none : all">
+                <a class="page-link" aria-label="Previous"
+                   th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=${prevPageNo})}">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"
+                th:each="pageNum,rowStat : ${#numbers.sequence(1, blockSize)}"
+                th:with="pageNumTmp=${(rowStat.count - 1) + startPage}"
+                th:remove="${pageNumTmp le lastPage} ? none : all"
+                th:class="${pageNumTmp eq execJobs.pageNo ? 'page-item active' : 'page-item'}">
+                <a class="page-link"
+                   th:if="${pageNumTmp ne execJobs.pageNo}"
+                   th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=${pageNumTmp})}"
+                   th:text="${pageNumTmp}">1</a>
+                <a class="page-link" th:unless="${pageNumTmp ne execJobs.pageNo}" th:text="${pageNumTmp}">1</a>
+            </li>
+            <li class="page-item"
+                th:with="nextPageNo=${blockNo * blockSize + 1}"
+                th:remove="${(blockNo * blockSize) lt lastPage} ? none : all">
+                <a class="page-link" aria-label="Next"
+                   th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=${nextPageNo})}">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+            <li class="page-item" th:remove="${(blockNo * blockSize) lt lastPage} ? none : all">
+                <a class="page-link"
+                   th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=${lastPage})}">
+                    Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<!-- /.container -->
+<div th:replace="html/fragments/footer :: footer"/>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    function fn_stopJobExecution(jobExecutionId) {
+        var url = /*[[@{/batch/schedule/stopJobExecution}]]*/"";
+        var params = {
+            jobExecutionId: jobExecutionId
+        };
+        $.post(url, params).done(function (data) {
+            alert("Job 실행 중지를 요청하였습니다.");
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        }).success(function () {
+            location.reload(true);
+        });
+    }
+
+    function fn_abandonJobExecution(jobExecutionId) {
+        var url = /*[[@{/batch/schedule/abandonJobExecution}]]*/"";
+        var params = {
+            jobExecutionId: jobExecutionId
+        };
+        $.post(url, params).done(function (data) {
+            alert("Job 실행 종료를 요청하였습니다.");
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        }).success(function () {
+            location.reload(true);
+        });
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

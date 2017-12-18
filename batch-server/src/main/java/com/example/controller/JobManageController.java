@@ -79,4 +79,18 @@ public class JobManageController {
         }
         return "html/batch/stepExecutionList";
     }
+
+    @GetMapping(value = "/batch/web/executionJobList")
+    public String executionJobList(@ModelAttribute(value = "execJobs") JobExecutionModel jobExecutionModel) {
+        try {
+            if (jobExecutionModel.getPageNo() < 1) {
+                jobExecutionModel.setPageNo(1);
+            }
+            jobExecutionModel.setPageRows(10);
+            jobExecutionModel.setJobExecutionList(jobDetailService.selectExecutionJobsList(jobExecutionModel));
+        } catch (Exception e) {
+            log.error("executionJobList ERROR", e);
+        }
+        return "html/batch/executionJobList";
+    }
 }

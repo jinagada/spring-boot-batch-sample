@@ -49,4 +49,33 @@
            ,MDATE = NOW()
         WHERE JOB_NAME = #{jobName}
     </update>
+
+    <select id="selectExecutionJobsCount" resultType="integer">
+        SELECT COUNT(T1.JOB_EXECUTION_ID)
+        FROM BATCH_JOB_EXECUTION T1
+             INNER JOIN BATCH_JOB_INSTANCE T2
+                     ON T2.JOB_INSTANCE_ID = T1.JOB_INSTANCE_ID
+                    AND T2.JOB_NAME IN
+        <foreach item="jobName" index="index" collection="jobNameList" open="(" separator="," close=")">
+            #{jobName}
+        </foreach>
+    </select>
+
+    <select id="selectExecutionJobsList" parameterType="jobExecutionModel" resultType="jobExecutionModel">
+        SELECT T1.JOB_EXECUTION_ID AS JOB_EXECUTION_ID
+              ,T2.JOB_NAME AS JOB_NAME
+              ,T1.START_TIME AS START_TIME
+              ,T1.END_TIME AS END_TIME
+              ,T1.STATUS AS STATUS
+              ,T1.EXIT_CODE AS EXIT_CODE
+        FROM BATCH_JOB_EXECUTION T1
+             INNER JOIN BATCH_JOB_INSTANCE T2
+                     ON T2.JOB_INSTANCE_ID = T1.JOB_INSTANCE_ID
+                    AND T2.JOB_NAME IN
+        <foreach item="jobName" index="index" collection="jobNameList" open="(" separator="," close=")">
+            #{jobName}
+        </foreach>
+        ORDER BY T1.JOB_EXECUTION_ID DESC
+        LIMIT #{offset}, #{pageRows}
+    </select>
 </mapper>

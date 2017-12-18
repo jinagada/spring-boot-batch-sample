@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @ToString
-public class JobExecutionModel {
+public class JobExecutionModel extends CommonModel {
     private Long jobExecutionId;
     private String jobName;
     private Date createTime;
