@@ -68,6 +68,34 @@
             alert("잘못된 정보 입니다.");
         });
     }
+    
+    function fn_stopJobExecution(jobExecutionId) {
+        var url = /*[[@{/batch/schedule/stopJobExecution}]]*/"";
+        var params = {
+            jobExecutionId: jobExecutionId
+        };
+        $.post(url, params).done(function (data) {
+            alert("Job 실행 중지를 요청하였습니다.");
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        }).success(function () {
+            fn_getJobExecutionList($("#currJobInstanceId").val(), $("#currJobExecutionId").val());
+        });
+    }
+
+    function fn_abandonJobExecution(jobExecutionId) {
+        var url = /*[[@{/batch/schedule/abandonJobExecution}]]*/"";
+        var params = {
+            jobExecutionId: jobExecutionId
+        };
+        $.post(url, params).done(function (data) {
+            alert("Job 실행 종료를 요청하였습니다.");
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        }).success(function () {
+            fn_getJobExecutionList($("#currJobInstanceId").val(), $("#currJobExecutionId").val());
+        });
+    }
 /*]]>*/
 </script>
 </body>

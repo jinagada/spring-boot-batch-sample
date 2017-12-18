@@ -15,8 +15,20 @@
     <tr th:each="execObj,rowStat : ${jobExec.jobExecutionList}">
         <td th:text="${execObj.jobExecutionId}">Execution ID</td>
         <td th:text="${#dates.format(execObj.startTime, 'yyyy/MM/dd HH:mm:ss')}">시작 시간</td>
-        <td th:text="${#dates.format(execObj.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
-        <td th:text="${execObj.status}">작업 상태</td>
+        <td th:if="${execObj.endTime}"
+            th:text="${#dates.format(execObj.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+        <td th:unless="${execObj.endTime}">-</td>
+        <td th:inline="text">
+            [[${execObj.status}]]
+            <button type="button" class="btn btn-primary"
+                    th:onclick="${'javascript:fn_stopJobExecution(' + execObj.jobExecutionId + ')'}"
+                    th:remove="${execObj.status.name() eq 'STARTING' or execObj.status.name() eq 'STARTED'} ? none : all">실행중지
+            </button>
+            <button type="button" class="btn btn-primary"
+                    th:onclick="${'javascript:fn_abandonJobExecution(' + execObj.jobExecutionId + ')'}"
+                    th:remove="${execObj.status.name() eq 'STOPPING' or execObj.status.name() eq 'STOPPED'} ? none : all">실행종료
+            </button>
+        </td>
         <td th:text="${execObj.exitCode}">종료 상태</td>
     </tr>
     </tbody>

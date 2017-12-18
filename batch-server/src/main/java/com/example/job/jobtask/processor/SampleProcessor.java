@@ -15,6 +15,7 @@ public class SampleProcessor implements ItemProcessor<SampleOrgModel, SampleTagM
         log.debug("SampleProcessor input : {}", item);
         result.setId(item.getId());
         result.setName(item.getName());
+        Thread.sleep(10000);// 10 seconds
         return result;
     }
 }

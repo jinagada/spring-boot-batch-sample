@@ -22,9 +22,13 @@
         </td>
         <td class="valueJobExecutionId" th:text="${insObj.lastExecution.jobExecutionId}">Execution ID</td>
         <td th:text="${#dates.format(insObj.lastExecution.startTime, 'yyyy/MM/dd HH:mm:ss')}">시작 시간</td>
-        <td th:text="${#dates.format(insObj.lastExecution.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+        <td th:if="${insObj.lastExecution.endTime}"
+            th:text="${#dates.format(insObj.lastExecution.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+        <td th:unless="${insObj.lastExecution.endTime}">-</td>
         <td th:text="${insObj.lastExecution.status}">작업 상태</td>
-        <td th:text="${#dates.format(insObj.lastExecution.lastUpdated, 'yyyy/MM/dd HH:mm:ss')}">상태변경 시간</td>
+        <td th:if="${insObj.lastExecution.lastUpdated}"
+            th:text="${#dates.format(insObj.lastExecution.lastUpdated, 'yyyy/MM/dd HH:mm:ss')}">상태변경 시간</td>
+        <td th:unless="${insObj.lastExecution.lastUpdated}">-</td>
         <td th:text="${insObj.lastExecution.jobParameters}">파라메터</td>
     </tr>
     </tbody>
@@ -68,8 +72,7 @@
         </li>
     </ul>
 </nav>
-<input type="hidden" id="currJobInstanceId" th:if="${0 lt jobIns.jobInstanceList.size()}"
-       th:value="${jobIns.jobInstanceList[0].jobInstanceId}" />
+<input type="hidden" id="currJobInstanceId" th:if="${0 lt jobIns.jobInstanceList.size()}" th:value="${jobIns.jobInstanceList[0].jobInstanceId}" />
 <input type="hidden" id="currJobExecutionId" value="" />
 <input type="hidden" id="pageRows" th:value="${jobIns.pageRows}" />
 <input type="hidden" id="pageNo" th:value="${jobIns.pageNo}" />
