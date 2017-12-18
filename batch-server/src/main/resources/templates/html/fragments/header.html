@@ -5,6 +5,7 @@
     <title th:text="'Spring Boot Batch 예제 - ' + ${jobName} + ' ' + ${title}" />
     <!-- this is header-css -->
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.3.7/css/bootstrap-theme.css" />
     <link rel="stylesheet" th:href="@{/css/main.css}" href="/css/main.css" />
 </head>
 <body>
@@ -15,9 +16,21 @@
             <div class="navbar-header">
                 <a class="navbar-brand" th:href="@{/}">Home</a>
             </div>
-            <div id="navbar" class="collapse navbar-collapse" sec:authorize="isAnonymous()">
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav" sec:authorize="isAnonymous()">
+                    <li th:class="${#httpServletRequest.requestURI eq '/login' ? 'active' : ''}">
+                        <a th:href="@{/login}">Login</a>
+                    </li>
+                </ul>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a th:href="@{/login}">Login</a></li>
+                    <li th:class="${#httpServletRequest.requestURI eq '/batch/web/scheduleList' ? 'active' : ''}">
+                        <a th:href="@{/batch/web/scheduleList}">스케줄 목록</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li th:class="${#httpServletRequest.requestURI eq '/about' ? 'active' : ''}">
+                        <a th:href="@{/about}">About</a>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -1,16 +1,16 @@
 package com.example.controller;
 
+import com.example.model.JobExecutionModel;
 import com.example.model.JobInstanceModel;
 import com.example.model.JobScheduleModel;
+import com.example.model.StepExecutionModel;
 import com.example.service.JobDetailService;
 import com.example.service.JobScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @Slf4j
@@ -36,28 +36,47 @@ public class JobManageController {
     }
 
     @GetMapping(value = "/batch/web/scheduleList")
-    public String scheduleList(Model model) {
+    public String scheduleList(@ModelAttribute(value = "jobModel") JobScheduleModel jobScheduleModel) {
         try {
-            List<JobScheduleModel> joblist = jobScheduleService.getJobScheduleList();
-            model.addAttribute("joblist", joblist);
+            jobScheduleModel.setJobScheduleModelList(jobScheduleService.getJobScheduleList());
         } catch (Exception e) {
             log.error("scheduleList ERROR", e);
         }
         return "html/batch/scheduleList";
     }
 
-    @GetMapping(value = "/batch/web/jobExecuteList")
-    public String jobExecuteList(JobInstanceModel jobInstanceModel, Model model) {
+    @GetMapping(value = "/batch/web/jobDetail")
+    public String jobDetail(@ModelAttribute(value = "jobDetail") JobInstanceModel jobInstanceModel) {
+        return "html/batch/jobDetail";
+    }
+
+    @GetMapping(value = "/batch/web/jobInstanceList.ajax")
+    public String jobInstanceList(@ModelAttribute(value = "jobIns") JobInstanceModel jobInstanceModel) {
         try {
-            final int pageNo = jobInstanceModel.getPageNo() < 1 ? 1 : jobInstanceModel.getPageNo();
-            final int pageRows = jobInstanceModel.getPageRows() < 10 ? 10 : jobInstanceModel.getPageNo();
-            jobInstanceModel.setPageNo(pageNo);
-            jobInstanceModel.setPageRows(pageRows);
-            List<JobInstanceModel> execJobList = jobDetailService.getJobInstanceList(jobInstanceModel);
-            model.addAttribute("execJobList", execJobList);
+            jobInstanceModel.setJobInstanceList(jobDetailService.getJobInstanceList(jobInstanceModel));
         } catch (Exception e) {
-            log.error("jobExecuteList ERROR", e);
+            log.error("jobInstanceList ERROR", e);
         }
-        return "html/batch/jobExecuteList";
+        return "html/batch/jobInstanceList";
+    }
+
+    @GetMapping(value = "/batch/web/jobExecutionList.ajax")
+    public String jobExecutionList(@ModelAttribute(value = "jobExec") JobExecutionModel jobExecutionModel) {
+        try {
+            jobExecutionModel.setJobExecutionList(jobDetailService.getJobExecutionListByJobInstanceId(jobExecutionModel));
+        } catch (Exception e) {
+            log.error("jobExecutionList ERROR", e);
+        }
+        return "html/batch/jobExecutionList";
+    }
+
+    @GetMapping(value = "/batch/web/stepExecutionList.ajax")
+    public String stepExecutionList(@ModelAttribute(value = "stepExec") StepExecutionModel stepExecutionModel) {
+        try {
+            stepExecutionModel.setStepExecutionList(jobDetailService.getStepExecutionList(stepExecutionModel));
+        } catch (Exception e) {
+            log.error("stepExecutionList ERROR", e);
+        }
+        return "html/batch/stepExecutionList";
     }
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="html/fragments/header :: header-css(title='Job 상세', jobName=${jobDetail.jobName})" />
+<body>
+<div th:replace="html/fragments/header :: header"/>
+<div class="container">
+    <h2 th:text="${jobDetail.jobName} + ' Job 상세'">Job 상세</h2>
+    <h3>Job Instance 목록</h3>
+    <div id="jobInstanceList">
+    </div>
+    <h3>Job Execution 목록</h3>
+    <div id="jobExecutionList">
+    </div>
+    <h3>Step Execution 목록</h3>
+    <div id="stepExecutionList">
+    </div>
+
+</div>
+<!-- /.container -->
+<div th:replace="html/fragments/footer :: footer"/>
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+    $(document).ready(function () {
+        fn_getJobInstanceList(3, 1)
+    });
+    
+    function fn_getJobInstanceList(pageRows, pageNo) {
+        var url = /*[[@{/batch/web/jobInstanceList.ajax}]]*/"";
+        var params = {
+            jobName: /*[[${jobDetail.jobName}]]*/'',
+            pageRows: pageRows,
+            pageNo: pageNo
+        };
+        $.get(url, params).done(function (data) {
+            $("#jobInstanceList").html(data);
+            var jobInstanceId = $("#jobInstanceList td").find(".valueJobInstanceId").get(0);
+            if (jobInstanceId) {
+                fn_getJobExecutionList($(jobInstanceId).text(), $(jobInstanceId).parent().parent().children(".valueJobExecutionId").text());
+            }
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        });
+    }
+    
+    function fn_getJobExecutionList(jobInstanceId, jobExecutionId) {
+        $("#currJobInstanceId").val(jobInstanceId);
+        $("#currJobExecutionId").val(jobExecutionId);
+        var url = /*[[@{/batch/web/jobExecutionList.ajax}]]*/"";
+        var params = {
+            jobInstanceId: jobInstanceId
+        };
+        $.get(url, params).done(function (data) {
+            $("#jobExecutionList").html(data);
+            fn_getStepExecutionList(jobExecutionId);
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        });
+    }
+    
+    function fn_getStepExecutionList(jobExecutionId) {
+        var url = /*[[@{/batch/web/stepExecutionList.ajax}]]*/"";
+        var params = {
+            jobExecutionId: jobExecutionId
+        };
+        $.get(url, params).done(function (data) {
+            $("#stepExecutionList").html(data);
+        }).fail(function (data) {
+            alert("잘못된 정보 입니다.");
+        });
+    }
+/*]]>*/
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Instance ID</th>
+        <th scope="col">Execution ID</th>
+        <th scope="col">시작 시간</th>
+        <th scope="col">종료 시간</th>
+        <th scope="col">작업 상태</th>
+        <th scope="col">상태변경 시간</th>
+        <th scope="col">파라메터</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="insObj,rowStat : ${jobIns.jobInstanceList}">
+        <td>
+            <a class="valueJobInstanceId"
+               th:href="${'javascript:fn_getJobExecutionList(' + insObj.jobInstanceId + ',' + insObj.lastExecution.jobExecutionId + ')'}"
+               th:text="${insObj.jobInstanceId}">Instance ID</a>
+        </td>
+        <td class="valueJobExecutionId" th:text="${insObj.lastExecution.jobExecutionId}">Execution ID</td>
+        <td th:text="${#dates.format(insObj.lastExecution.startTime, 'yyyy/MM/dd HH:mm:ss')}">시작 시간</td>
+        <td th:text="${#dates.format(insObj.lastExecution.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+        <td th:text="${insObj.lastExecution.status}">작업 상태</td>
+        <td th:text="${#dates.format(insObj.lastExecution.lastUpdated, 'yyyy/MM/dd HH:mm:ss')}">상태변경 시간</td>
+        <td th:text="${insObj.lastExecution.jobParameters}">파라메터</td>
+    </tr>
+    </tbody>
+</table>
+<nav aria-label="pageing" th:with="blockSize=3, blockNo=${((jobIns.pageNo + jobIns.pageRows) - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows)) / jobIns.pageRows - ((jobIns.pageNo + jobIns.pageRows) % jobIns.pageRows eq 0 ? 1 : 0)}">
+    <ul class="pagination justify-content-center"
+        th:with="startPage=${(blockNo - 1) * blockSize + 1}, lastPage=${(jobIns.totalCount - (jobIns.totalCount % jobIns.pageRows)) / jobIns.pageRows + 1 - (jobIns.totalCount % jobIns.pageRows eq 0 ? 1 : 0)}">
+        <li class="page-item" th:remove="${startPage gt blockSize} ? none : all">
+            <a class="page-link" th:href="${'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',1)'}">First</a>
+        </li>
+        <li class="page-item"
+            th:with="prevPageNo=${(blockNo - 2) * blockSize + 1}"
+            th:remove="${startPage gt blockSize} ? none : all">
+            <a class="page-link" aria-label="Previous"
+               th:href="${'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',' + prevPageNo + ')'}">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item"
+            th:each="pageNum,rowStat : ${#numbers.sequence(1, blockSize)}"
+            th:with="pageNumTmp=${(rowStat.count - 1) + startPage}"
+            th:remove="${pageNumTmp le lastPage} ? none : all"
+            th:class="${pageNumTmp eq jobIns.pageNo ? 'page-item active' : 'page-item'}">
+            <a class="page-link"
+               th:href="${pageNumTmp eq jobIns.pageNo ? '' : 'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',' + pageNumTmp + ')'}"
+               th:text="${pageNumTmp}">1</a>
+        </li>
+        <li class="page-item"
+            th:with="nextPageNo=${blockNo * blockSize + 1}"
+            th:remove="${(blockNo * blockSize) lt lastPage} ? none : all">
+            <a class="page-link" aria-label="Next"
+               th:href="${'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',' + nextPageNo + ')'}">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item" th:remove="${(blockNo * blockSize) lt lastPage} ? none : all">
+            <a class="page-link"
+               th:href="${'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',' + lastPage + ')'}">Last</a>
+        </li>
+    </ul>
+</nav>
+<input type="hidden" id="currJobInstanceId" th:if="${0 lt jobIns.jobInstanceList.size()}"
+       th:value="${jobIns.jobInstanceList[0].jobInstanceId}" />
+<input type="hidden" id="currJobExecutionId" value="" />
+<input type="hidden" id="pageRows" th:value="${jobIns.pageRows}" />
+<input type="hidden" id="pageNo" th:value="${jobIns.pageNo}" />
+</body>
+</html>

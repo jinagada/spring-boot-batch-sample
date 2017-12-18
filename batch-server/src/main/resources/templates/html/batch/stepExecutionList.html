@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Step Name</th>
+        <th scope="col">상태</th>
+        <th scope="col">Read</th>
+        <th scope="col">Write</th>
+        <th scope="col">Commit</th>
+        <th scope="col">Rollback</th>
+        <th scope="col">시작 시간</th>
+        <th scope="col">종료 시간</th>
+        <th scope="col">상태변경 시간</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="execObj,rowStat : ${stepExec.stepExecutionList}">
+        <td th:text="${execObj.stepName}">Step Name</td>
+        <td th:text="${execObj.status}">상태</td>
+        <td th:text="${execObj.readCount}">Read</td>
+        <td th:text="${execObj.writeCount}">Write</td>
+        <td th:text="${execObj.commitCount}">Commit</td>
+        <td th:text="${execObj.rollbackCount}">Rollback</td>
+        <td th:text="${#dates.format(execObj.startTime, 'yyyy/MM/dd HH:mm:ss')}">시작 시간</td>
+        <td th:text="${#dates.format(execObj.endTime, 'yyyy/MM/dd HH:mm:ss')}">종료 시간</td>
+        <td th:text="${#dates.format(execObj.lastUpdated, 'yyyy/MM/dd HH:mm:ss')}">상태변경 시간</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

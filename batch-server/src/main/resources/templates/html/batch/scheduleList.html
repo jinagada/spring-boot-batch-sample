@@ -19,14 +19,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="jobObj,rowStat : ${joblist}">
+            <tr th:each="jobObj,rowStat : ${jobModel.jobScheduleModelList}">
                 <td class="executeJob"
                     scope="row"
                     style="cursor: pointer"
                     data-target="#layerSaveSchedule" data-toggle="modal"
                     th:text="${rowStat.count}">1</td>
                 <td>
-                    <a class="valueJobName" th:text="${jobObj.jobName}" th:href="@{/batch/web/jobExecuteList(jobName=${jobObj.jobName})}" />
+                    <a class="valueJobName" th:text="${jobObj.jobName}"
+                       th:href="@{/batch/web/jobDetail(jobName=${jobObj.jobName})}" />
                 </td>
                 <td class="valueCronExpression"
                     style="cursor: pointer"
@@ -35,7 +36,7 @@
                 <td class="valueJobParameter" th:text="${jobObj.jobParameter}">파라메터</td>
                 <td class="valueDescription" th:text="${jobObj.description}">설명</td>
                 <td class="changeSeheduled" style="cursor: pointer" th:inline="text">
-                    [[${jobObj.scheduled == 1 ? '실행' : '중지'}]]
+                    [[${jobObj.scheduled eq 1 ? '실행' : '중지'}]]
                     <input type="hidden" name="scheduled" th:value="${jobObj.scheduled}" />
                 </td>
                 <td th:text="${jobObj.lastStatus}">최종상태</td>
@@ -129,7 +130,7 @@
                 $("#hideCronExpression").hide();
                 $("#hideDescription").hide();
                 $("#hideScheduled").hide();
-                $(".modal-title").text("스케줄 실행");
+                $(".modal-title").text("Job 강제실행");
                 $(".saveSchedule").text("실행");
                 $("#_jobName").val(thisObj.parent().find(".valueJobName").text());
                 $("#_jobParameter").val(thisObj.parent().children(".valueJobParameter").text());
