@@ -69,7 +69,7 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
                 final String alramContents = String.format("%s-%d Job has been error!!! Exit Code is %s", jobName,
                         instanceId, exitCode);
                 // 메일 발송
-                alramService.alramSend(afterErrorReceiveEmail, afterErrorTitle, alramContents, "mail.vm");
+                alramService.alramSend(afterErrorReceiveEmail, afterErrorTitle, alramContents, "email/mail.vm");
             }
 
             log.debug("afterJob : {}-{}", jobName, instanceId);
