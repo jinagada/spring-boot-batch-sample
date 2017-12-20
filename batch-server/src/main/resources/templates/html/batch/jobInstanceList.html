@@ -55,7 +55,7 @@
             th:each="pageNum,rowStat : ${#numbers.sequence(1, blockSize)}"
             th:with="pageNumTmp=${(rowStat.count - 1) + startPage}"
             th:remove="${pageNumTmp le lastPage} ? none : all"
-            th:class="${pageNumTmp eq jobIns.pageNo ? 'page-item active' : 'page-item'}">
+            th:classappend="${pageNumTmp eq jobIns.pageNo ? 'active' : ''}">
             <a class="page-link"
                th:href="${pageNumTmp eq jobIns.pageNo ? '' : 'javascript:fn_getJobInstanceList(' + jobIns.pageRows + ',' + pageNumTmp + ')'}"
                th:text="${pageNumTmp}">1</a>

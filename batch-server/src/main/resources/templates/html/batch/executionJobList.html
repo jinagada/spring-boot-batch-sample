@@ -63,7 +63,7 @@
                 th:each="pageNum,rowStat : ${#numbers.sequence(1, blockSize)}"
                 th:with="pageNumTmp=${(rowStat.count - 1) + startPage}"
                 th:remove="${pageNumTmp le lastPage} ? none : all"
-                th:class="${pageNumTmp eq execJobs.pageNo ? 'page-item active' : 'page-item'}">
+                th:classappend="${pageNumTmp eq execJobs.pageNo ? 'active' : ''}">
                 <a class="page-link"
                    th:if="${pageNumTmp ne execJobs.pageNo}"
                    th:href="@{/batch/web/executionJobList(pageRows=${execJobs.pageRows},pageNo=${pageNumTmp})}"
