@@ -40,7 +40,9 @@
                     <input type="hidden" name="scheduled" th:value="${jobObj.scheduled}" />
                 </td>
                 <td th:text="${jobObj.lastStatus}">최종상태</td>
-                <td th:text="${#dates.format(jobObj.lastUpdateTime, 'yyyy/MM/dd HH:mm:ss')}">최종시간</td>
+                <td th:if="${jobObj.lastUpdateTime}"
+                    th:text="${#dates.format(jobObj.lastUpdateTime, 'yyyy/MM/dd HH:mm:ss')}">최종시간</td>
+                <td th:unless="${jobObj.lastUpdateTime}">-</td>
             </tr>
         </tbody>
     </table>
