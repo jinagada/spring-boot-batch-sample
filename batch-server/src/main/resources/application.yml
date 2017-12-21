@@ -1,3 +1,6 @@
+server:
+  session:
+    timeout: 3600
 spring:
   batch:
     initializer:
