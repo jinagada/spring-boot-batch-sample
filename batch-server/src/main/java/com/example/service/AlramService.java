@@ -23,18 +23,16 @@ public class AlramService {
     @Value("${batcherror.send.email}")
     private String senderEmail;
 
-    public boolean alramSend(final String receive, final String alramTitle, final String alramMessage, final String
-            template) throws
-            Exception {
+    public boolean alramSend(final String receive, final String alramTitle, final String alramMessage, final String template) throws Exception {
         boolean isSended = false;
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
+        final MimeMessage message = mailSender.createMimeMessage();
+        final MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
         messageHelper.setTo(receive);
         messageHelper.setFrom(senderEmail);
         messageHelper.setSubject(alramTitle);
-        Map<String, Object> param = new HashMap<>();
+        final Map<String, Object> param = new HashMap<>();
         param.put("messageStr", alramMessage);
-        String content = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "utf-8", param);
+        final String content = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, "utf-8", param);
         messageHelper.setText(content);
         mailSender.send(message);
         isSended = true;
