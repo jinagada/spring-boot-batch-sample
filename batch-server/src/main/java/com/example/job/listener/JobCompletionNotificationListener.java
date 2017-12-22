@@ -42,10 +42,9 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
                 // 새로 실행된 Job 중지
                 jobExecution.stop();
                 log.error("{}-{} Job has been stoped!! because this job is already running!!!", jobName, instanceId);
-                final String alramContents = String.format("%s-%d Job has been stoped!! because this job is already running!!!", jobName,
-                        instanceId);
+                final String alramContents = String.format("%s-%d Job has been stoped!! because this job is already running!!!", jobName, instanceId);
                 // 메일 발송
-                alramService.alramSend(beforeErrorReceiveEmail, beforeErrorTitle, alramContents, "email/mail.vm");
+                alramService.alramSend(beforeErrorReceiveEmail, beforeErrorTitle, alramContents, "email/mail");
             }
 
             log.debug("beforeJob : {}-{}", jobName, instanceId);
@@ -66,10 +65,9 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
             // 정상종료, 강제중지 여부 확인
             if (jobExecution.getStatus() != BatchStatus.COMPLETED && jobExecution.getStatus() != BatchStatus.STOPPED) {
                 log.error("{}-{} Job has been error!!! Exit Code is {}", jobName, instanceId, exitCode);
-                final String alramContents = String.format("%s-%d Job has been error!!! Exit Code is %s", jobName,
-                        instanceId, exitCode);
+                final String alramContents = String.format("%s-%d Job has been error!!! Exit Code is %s", jobName, instanceId, exitCode);
                 // 메일 발송
-                alramService.alramSend(afterErrorReceiveEmail, afterErrorTitle, alramContents, "email/mail.vm");
+                alramService.alramSend(afterErrorReceiveEmail, afterErrorTitle, alramContents, "email/mail");
             }
 
             log.debug("afterJob : {}-{}", jobName, instanceId);
