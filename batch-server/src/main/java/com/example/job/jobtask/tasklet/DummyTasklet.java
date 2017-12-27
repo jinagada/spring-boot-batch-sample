@@ -21,7 +21,7 @@ public class DummyTasklet implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        log.info("DummyTasklet Execute dummy : {}", dummy);
+        log.debug("DummyTasklet Execute dummy : {}", dummy);
         final boolean isDummy = StringUtils.equalsIgnoreCase(dummy, CommonCodeEnum.DUMMY.getCode());
         if (isDummy) {
             contribution.setExitStatus(new ExitStatus(CommonCodeEnum.DUMMY.getCode()));
