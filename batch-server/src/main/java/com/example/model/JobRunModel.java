@@ -7,5 +7,5 @@ import lombok.ToString;
 @ToString
 public class JobRunModel {
     private String jobName;
-    private String jobParameters;
+    private String jobParameter;
 }

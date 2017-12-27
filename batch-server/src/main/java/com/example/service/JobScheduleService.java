@@ -16,7 +16,6 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,7 +36,7 @@ public class JobScheduleService implements SchedulingConfigurer {
     private JobScheduleBatchMapper jobScheduleBatchMapper;
 
     public Long startJob(JobRunModel jobRunModel) throws JobInstanceAlreadyExistsException, JobParametersInvalidException, NoSuchJobException {
-        return startJobWithDateParameter(jobRunModel.getJobName(), jobRunModel.getJobParameters());
+        return startJobWithDateParameter(jobRunModel.getJobName(), jobRunModel.getJobParameter());
     }
 
     public List<JobScheduleModel> getJobScheduleList() throws NoSuchJobInstanceException, NoSuchJobException {
