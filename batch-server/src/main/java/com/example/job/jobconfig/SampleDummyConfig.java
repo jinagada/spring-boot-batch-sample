@@ -32,6 +32,7 @@ public class SampleDummyConfig {
         return jobBuilderFactory.get("sampleDummyJob")
                 .incrementer(new RunIdIncrementer())
                 .listener(notificationListener)
+                // Dummy Tasklet Flow 설정
                 .flow(sampleDummyStep()).on(CommonCodeEnum.DUMMY.getCode()).end()
                 .from(sampleDummyStep()).on(ExitStatus.COMPLETED.getExitCode()).to(sampleTaskletStep1())
                 .next(sampleTaskletStep2())
@@ -40,6 +41,11 @@ public class SampleDummyConfig {
                 .build();
     }
 
+    /**
+     * 임시 실행용 Dummy Tasklet
+     * jobParameter에 “dummy=dummy” 사용 시 Dummy Tasklet만 실행됨
+     * @return
+     */
     @Bean
     public Step sampleDummyStep() {
         return stepBuilderFactory.get("sampleDummyStep")
