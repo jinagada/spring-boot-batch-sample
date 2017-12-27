@@ -34,7 +34,8 @@ public class SampleDummyConfig {
                 .listener(notificationListener)
                 .flow(sampleDummyStep()).on(CommonCodeEnum.DUMMY.getCode()).end()
                 .from(sampleDummyStep()).on(ExitStatus.COMPLETED.getExitCode()).to(sampleTaskletStep1())
-                .next(sampleTaskletStep2()).on("*").end()
+                .next(sampleTaskletStep2())
+                .next(sampleTaskletStep3())
                 .end()
                 .build();
     }
@@ -56,6 +57,13 @@ public class SampleDummyConfig {
     @Bean
     public Step sampleTaskletStep2() {
         return stepBuilderFactory.get("sampleTaskletStep2")
+                .tasklet(sampleTasklet)
+                .build();
+    }
+
+    @Bean
+    public Step sampleTaskletStep3() {
+        return stepBuilderFactory.get("sampleTaskletStep3")
                 .tasklet(sampleTasklet)
                 .build();
     }
