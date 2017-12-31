@@ -1,3 +1,3 @@
-rootProject.name = 'demo'
+rootProject.name = 'demo-batch'
 include 'batch-server'
 include 'h2-server'
