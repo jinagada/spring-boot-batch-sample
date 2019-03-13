@@ -41,8 +41,8 @@
         </tr>
         </tbody>
     </table>
-    <th:block th:with="blockSize=10,
-                       blockNo=${((execJobs.pageNo + execJobs.pageRows) - ((execJobs.pageNo + execJobs.pageRows) % execJobs.pageRows)) / execJobs.pageRows - ((execJobs.pageNo + execJobs.pageRows) % execJobs.pageRows eq 0 ? 1 : 0)}">
+    <th:block th:with="blockSize=10">
+    <th:block th:with="blockNo=${((execJobs.pageNo + blockSize) - ((execJobs.pageNo + blockSize) % blockSize)) / blockSize - ((execJobs.pageNo + blockSize) % blockSize eq 0 ? 1 : 0)}">
         <th:block th:with="startPage=${(blockNo - 1) * blockSize + 1},
                            lastPage=${(execJobs.totalCount - (execJobs.totalCount % execJobs.pageRows)) / execJobs.pageRows + 1 - (execJobs.totalCount % execJobs.pageRows eq 0 ? 1 : 0)}">
     <nav aria-label="pageing">
@@ -87,6 +87,7 @@
         </ul>
     </nav>
         </th:block>
+    </th:block>
     </th:block>
 </div>
 <!-- /.container -->

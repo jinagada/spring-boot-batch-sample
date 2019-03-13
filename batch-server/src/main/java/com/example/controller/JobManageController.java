@@ -86,7 +86,9 @@ public class JobManageController {
             if (jobExecutionModel.getPageNo() < 1) {
                 jobExecutionModel.setPageNo(1);
             }
-            jobExecutionModel.setPageRows(10);
+            if (jobExecutionModel.getPageRows() < 1) {
+                jobExecutionModel.setPageRows(10);
+            }
             jobExecutionModel.setJobExecutionList(jobDetailService.selectExecutionJobsList(jobExecutionModel));
         } catch (Exception e) {
             log.error("executionJobList ERROR", e);
